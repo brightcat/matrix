@@ -47,6 +47,18 @@ public class MatrixOpsTest {
             { 58., 64.}, {139.,154.}
         });
         
+        Matrix C = mu.create(new double[] {1,2,3,4,5,6},3,2);
+        Matrix D = mu.zeros(2,1);
+        
+        result = mo.dot(C,D);
+        
+        mu.print(result);
+        
+        assertArrayEquals(result.getData(), new double[][] {
+            {0},
+            {0},
+            {0}
+        });
     }
     
     
@@ -92,4 +104,17 @@ public class MatrixOpsTest {
         assertEquals(15, r,0.0);
     }
     
+    @Test
+    public void testTranspose() {
+        System.out.println("transpose");
+        Matrix m = mu.create(new double[] {1,2,3,4,5,6}, 2, 3);
+        Matrix t = mo.transpose(m);
+        
+        mu.print(t);
+        assertArrayEquals(t.getData(), new double[][] {
+            {1,4},
+            {2,5},
+            {3,6}
+        });
+    }
 }

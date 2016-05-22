@@ -1,9 +1,16 @@
 package za.co.brightcat.matrix;
 
-import java.util.function.Supplier;
+import java.util.Random;
+import java.util.function.DoubleSupplier;
 
 public class MatrixUtil {
     private static final String NEWLINE = "\n";
+    
+    final private Random random;
+
+    public MatrixUtil() {
+        this.random = new Random();
+    }
     
     public Matrix create(final double[] data, int m, int n) {
         assert data.length == m*n;
@@ -17,11 +24,21 @@ public class MatrixUtil {
         return new Matrix(d);
     }
     
-    public Matrix create(int m, int n, Supplier<Double> s) {
+    public Matrix create(int m, int n, double value) {
         final double[][] d = new double[m][n];
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                d[i][j] = s.get();
+                d[i][j] = value;
+            }
+        }
+        return new Matrix(d);
+    }
+    
+    public Matrix create(int m, int n, DoubleSupplier s) {
+        final double[][] d = new double[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                d[i][j] = s.getAsDouble();
             }
         }
         return new Matrix(d);
@@ -58,6 +75,14 @@ public class MatrixUtil {
     }
     
     public Matrix ones(int m, int n) {
-        return create(m, n, () -> 1.);
+        return create(m, n, 1.);
+    }
+    
+    public Matrix random(int m) {
+        return random(m, m);
+    }
+    
+    public Matrix random(int m, int n) {
+        return create(m, n, () -> random.nextDouble());
     }
 }

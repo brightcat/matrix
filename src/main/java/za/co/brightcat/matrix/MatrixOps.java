@@ -3,24 +3,29 @@ package za.co.brightcat.matrix;
 import za.co.brightcat.matrix.BiDoubleFunction;
 
 public class MatrixOps {
+
+    private static final BiDoubleFunction minus = (x, y) -> x - y;
+
     public Matrix dot(Matrix A, Matrix B) {
         final int m = A.m();
-        final double[][] data = new double[m][m];
+        final int n = B.n();
+        final int o = B.m();
+        final double[][] data = new double[m][n];
         for (int i = 0; i < m; i++) {
             final double[] row = A.row(i);
-            for (int j = 0; j < m; j++) {
+            for (int j = 0; j < n; j++) {
                 final double[] col = B.col(j);
                 double sum = 0.0;
-                for (int k = 0; k < col.length; k++) {
+                for (int k = 0; k < o; k++) {
                     sum += row[k] * col[k];
                 }
                 data[i][j] = sum;
             }
         }
-        
+
         return new Matrix(data);
     }
-    
+
     public Matrix map(Matrix M, DoubleFunction f) {
         final int m = M.m();
         final int n = M.n();
@@ -32,7 +37,7 @@ public class MatrixOps {
         }
         return new Matrix(data);
     }
-    
+
     public Matrix biMap(Matrix A, Matrix B, BiDoubleFunction f) {
         final int m = A.m();
         final int n = A.n();
@@ -43,10 +48,10 @@ public class MatrixOps {
                 d[i][j] = f.apply(A.value(i, j), B.value(i, j));
             }
         }
-        
+
         return new Matrix(d);
     }
-    
+
     public double reduce(Matrix A, double init, ReduceFunction f) {
         final int m = A.m();
         final int n = A.n();
@@ -58,5 +63,23 @@ public class MatrixOps {
             }
         }
         return res;
+    }
+
+    public Matrix minus(Matrix A, Matrix B) {
+        return biMap(A, B, minus);
+    }
+
+    public Matrix transpose(Matrix M) {
+        final int m = M.m();
+        final int n = M.n();
+        final double[][] data = new double[n][m];
+
+        for (int j = 0; j < n; j++) {
+            for (int i = 0; i < m; i++) {
+                data[j][i] = M.value(i, j);
+            }
+        }
+
+        return new Matrix(data);
     }
 }
