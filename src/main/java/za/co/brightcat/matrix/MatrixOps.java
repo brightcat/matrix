@@ -1,7 +1,5 @@
 package za.co.brightcat.matrix;
 
-import za.co.brightcat.matrix.BiDoubleFunction;
-
 public class MatrixOps {
 
     private static final BiDoubleFunction minus = (x, y) -> x - y;
